@@ -4,6 +4,9 @@ import java.util.Scanner;
 public class App {
     static boolean x = false;
     static boolean o = false;
+    static boolean draw = false;
+    static int countX = 0;
+    static int countO = 0;
     public static void main(String[] args) throws Exception {
         System.out.println("X O X");
         System.out.println("X O X");
@@ -18,6 +21,8 @@ public class App {
         char[] characters = input.toCharArray();
 
         gameGrid(characters);
+
+        scanner.close();
 
     }
 
@@ -51,10 +56,16 @@ public class App {
         readCrossX(grid);
         readCrossY(grid);
 
-        if (x == true) {
+        if (x == true && o == true || (countX - countO >= 2) || (countO - countX >= 2)) {
+            System.out.println("Impossible");
+        } else if (x == true) {
             System.out.println("X wins");
         } else  if (o == true) {
             System.out.println("O wins");
+        } else  if (draw == false) {
+            System.out.println("Draw");
+        } else  if (draw == true) {
+            System.out.println("Game not finished");
         } 
     }
 
@@ -98,10 +109,18 @@ public class App {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 sample.add(grid[i][j]);
-
+                countXO(grid[i][j]);
             }
             checkArrayList(sample);
             sample.clear();
+        }
+    }
+
+    private static void countXO(char c) {
+        if (c == 'X') {
+            countX += 1; 
+        } else if (c == 'O'){
+            countO += 1;
         }
     }
 
@@ -113,7 +132,9 @@ public class App {
                 o = true;
             }
         } else {
-
+            if (sample.contains('_') || sample.contains(' ')) {
+                draw = true;
+            }
         }
     }
 }
